@@ -69,7 +69,7 @@ freeline_project_description.json
 
 # fastlane
 fastlane/report.xml
-fastlane/Preview.html
+fastlane/Preview.htmls
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
@@ -86,3 +86,6 @@ lint/tmp/
 
 # Yeet mac ffile indexing files
 .DS_Store
+
+# Firebase config files
+google-services.json
