@@ -29,6 +29,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
         // Create a reference to "mountains.jpg"
-        StorageReference mimiRef = storageRef.child("mimi.jpg");
+        // The name is a unique random identifier
+        StorageReference mimiRef = storageRef.child("snap" + UUID.randomUUID().toString() + ".jpg");
         // Create a reference to 'images/mountains.jpg'
         StorageReference mimiImagesRef = storageRef.child("mimi/mimi.jpg");
 
