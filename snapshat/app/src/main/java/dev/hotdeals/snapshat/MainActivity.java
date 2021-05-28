@@ -6,12 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     TextView helloWorldTxt;
+    EditText captionText;
     ImageView previewImageView;
 
     @Override
@@ -41,8 +48,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         helloWorldTxt = findViewById(R.id.helloWorldTxt);
+        captionText = findViewById(R.id.captionText);
         previewImageView = findViewById(R.id.previewImageView);
 
+        // Add a listener that adds a caption to the image
+        captionText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                Log.d("Caption", "Text changed");
+                previewImageView.setImageBitmap(drawTextToBitmap(
+                        ((BitmapDrawable) previewImageView.getDrawable()).getBitmap(),
+                        captionText.getText().toString()));
+            }
+        });
     }
 
     public void addImage(View view) {
@@ -79,8 +106,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void takeCameraPicture(View view)
-    {
+    public void takeCameraPicture(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             // I know it is deprecated but all guides are using it
@@ -98,9 +124,30 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //imageBitmap = drawTextToBitmap(imageBitmap, "Yeet");
             previewImageView.setImageBitmap(imageBitmap);
         }
     }
+
+    public Bitmap drawTextToBitmap(Bitmap image, String gText) {
+        Bitmap.Config bitmapConfig = image.getConfig();
+        // set default bitmap config if none
+        if (bitmapConfig == null) {
+            bitmapConfig = Bitmap.Config.ARGB_8888;
+        }
+        // resource bitmaps are imutable,
+        // so we need to convert it to mutable one
+        image = image.copy(bitmapConfig, true);
+        Canvas canvas = new Canvas(image);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);// new antialised Paint
+        paint.setColor(Color.rgb(161, 161, 161));
+        paint.setTextSize((int) (24)); // text size in pixels
+        paint.setShadowLayer(1f, 0f, 1f, Color.BLACK); // text shadow
+        canvas.drawText(gText, 10, 200, paint);
+        return image;
+    }
+
+
 
     /*
     public void testFirestore(View view)
