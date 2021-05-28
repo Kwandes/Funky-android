@@ -144,4 +144,20 @@ public class MainActivity extends AppCompatActivity {
         canvas.drawText(gText, 10, 200, paint);
         return image;
     }
+
+    public void getAllSnaps()
+    {
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+        // Create a reference to the snap path
+        StorageReference pathRef = storageRef.child("mimi/snap*.jpg");
+        // Create a reference to 'images/mountains.jpg'
+        StorageReference mimiImagesRef = storageRef.child("mimi/mimi.jpg");
+    }
+
+    public void viewImages(View view)
+    {
+        Intent intent = new Intent(this, ViewSnapsActivity.class);
+        startActivity(intent);
+    }
 }

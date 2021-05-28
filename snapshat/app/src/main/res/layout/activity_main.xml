@@ -44,6 +44,7 @@
         android:layout_width="124dp"
         android:layout_height="51dp"
         android:layout_marginTop="72dp"
+        android:onClick="viewImages"
         android:text="View Images"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
