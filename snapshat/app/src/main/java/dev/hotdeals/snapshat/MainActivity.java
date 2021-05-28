@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -100,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
                 Log.d("Firebase", "Kiwi Mimi uploaded");
                 helloWorldTxt.setText("Image uploaded!");
             }
@@ -126,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //imageBitmap = drawTextToBitmap(imageBitmap, "Yeet");
             previewImageView.setImageBitmap(imageBitmap);
         }
     }
@@ -137,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         if (bitmapConfig == null) {
             bitmapConfig = Bitmap.Config.ARGB_8888;
         }
-        // resource bitmaps are imutable,
+        // resource bitmaps are immutable,
         // so we need to convert it to mutable one
         image = image.copy(bitmapConfig, true);
         Canvas canvas = new Canvas(image);
@@ -148,38 +144,4 @@ public class MainActivity extends AppCompatActivity {
         canvas.drawText(gText, 10, 200, paint);
         return image;
     }
-
-
-
-    /*
-    public void testFirestore(View view)
-    {
-        Map<String, Object> dataToSave = new HashMap<>();
-        dataToSave.put("test part one", "test stuff");
-        dataToSave.put("test part two", "more test stuff");
-        db.document("test/example").set(dataToSave).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.d("Saving result", "Thign has been saved");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w("Saving result", e);
-            }
-        });
-        db.collection("test").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("Yeet", document.getId() + " => " + document.getData());
-                    }
-                } else {
-                    Log.w("Yeet", "Error getting documents.", task.getException());
-                }
-            }
-        });
-    }
-     */
 }
