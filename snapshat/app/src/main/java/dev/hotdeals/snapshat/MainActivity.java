@@ -3,9 +3,12 @@ package dev.hotdeals.snapshat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,15 +19,21 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
     TextView helloWorldTxt;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +41,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         helloWorldTxt = findViewById(R.id.helloWorldTxt);
+        imageView = findViewById(R.id.kiwiMimiImageView);
 
     }
 
+    public void addImage(View view) {
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+        // Create a reference to "mountains.jpg"
+        StorageReference mimiRef = storageRef.child("mimi.jpg");
+        // Create a reference to 'images/mountains.jpg'
+        StorageReference mimiImagesRef = storageRef.child("mimi/mimi.jpg");
+
+        // Get the data from an ImageView as bytes
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mimiRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.w("The fuck", exception);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Log.d("Firebase", "Kiwi Mimi uploaded");
+                helloWorldTxt.setText("Image uploaded!");
+            }
+        });
+    }
+    /*
     public void testFirestore(View view)
     {
         Map<String, Object> dataToSave = new HashMap<>();
@@ -64,4 +108,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+     */
 }
