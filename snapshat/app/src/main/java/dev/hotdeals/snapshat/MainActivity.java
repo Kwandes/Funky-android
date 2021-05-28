@@ -3,37 +3,37 @@ package dev.hotdeals.snapshat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
+    // Image operation variables
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
     TextView helloWorldTxt;
-    ImageView imageView;
+    ImageView previewImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         helloWorldTxt = findViewById(R.id.helloWorldTxt);
-        imageView = findViewById(R.id.kiwiMimiImageView);
+        previewImageView = findViewById(R.id.previewImageView);
 
     }
 
@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
         StorageReference mimiImagesRef = storageRef.child("mimi/mimi.jpg");
 
         // Get the data from an ImageView as bytes
-        imageView.setDrawingCacheEnabled(true);
-        imageView.buildDrawingCache();
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        previewImageView.setDrawingCacheEnabled(true);
+        previewImageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) previewImageView.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
@@ -78,6 +78,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void takeCameraPicture(View view)
+    {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            // I know it is deprecated but all guides are using it
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            Log.d("Camera", "Camera picture has been taken");
+        } catch (ActivityNotFoundException e) {
+            Log.w("Camera", e);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            previewImageView.setImageBitmap(imageBitmap);
+        }
+    }
+
     /*
     public void testFirestore(View view)
     {
