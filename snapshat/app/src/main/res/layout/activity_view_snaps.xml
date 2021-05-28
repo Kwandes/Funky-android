@@ -7,10 +7,103 @@
     tools:context=".ViewSnapsActivity">
 
     <ImageView
-        android:id="@+id/testImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="192dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:id="@+id/snapFour"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/snapOne"
+        app:srcCompat="@drawable/empty" />
+
+    <ImageView
+        android:id="@+id/snapSeven"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/snapFour"
+        app:srcCompat="@drawable/empty" />
+
+    <ImageView
+        android:id="@+id/snapNine"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/snapEight"
+        app:layout_constraintTop_toBottomOf="@+id/snapSix"
+        app:srcCompat="@drawable/empty" />
+
+    <ImageView
+        android:id="@+id/snapEight"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/snapSeven"
+        app:layout_constraintTop_toBottomOf="@+id/snapFive"
+        app:srcCompat="@drawable/empty" />
+
+    <ImageView
+        android:id="@+id/snapSix"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@+id/snapFive"
+        app:layout_constraintTop_toBottomOf="@+id/snapThree"
+        app:srcCompat="@drawable/empty" />
+
+    <ImageView
+        android:id="@+id/snapFive"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@+id/snapFour"
+        app:layout_constraintTop_toBottomOf="@+id/snapTwo"
+        app:srcCompat="@drawable/empty" />
+
+    <ImageView
+        android:id="@+id/snapOne"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/empty" />
+
+    <ImageView
+        android:id="@+id/snapTwo"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/snapOne"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/empty" />
+
+    <ImageView
+        android:id="@+id/snapThree"
+        android:layout_width="110dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/snapTwo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/empty" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="405dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="124dp"
+        android:onClick="goBackToMainActivity"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
