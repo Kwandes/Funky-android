@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -32,7 +31,6 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
     // Image operation variables
@@ -78,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
         // Create a reference to "mountains.jpg"
         // The name is a unique random identifier
         StorageReference mimiRef = storageRef.child("snap" + UUID.randomUUID().toString() + ".jpg");
-        // Create a reference to 'images/mountains.jpg'
-        StorageReference mimiImagesRef = storageRef.child("mimi/mimi.jpg");
 
         // Get the data from an ImageView as bytes
         previewImageView.setDrawingCacheEnabled(true);
@@ -143,15 +139,6 @@ public class MainActivity extends AppCompatActivity {
         paint.setShadowLayer(1f, 0f, 1f, Color.BLACK); // text shadow
         canvas.drawText(gText, 10, 200, paint);
         return image;
-    }
-
-    public void getAllSnaps() {
-        // Create a storage reference from our app
-        StorageReference storageRef = storage.getReference();
-        // Create a reference to the snap path
-        StorageReference pathRef = storageRef.child("mimi/snap*.jpg");
-        // Create a reference to 'images/mountains.jpg'
-        StorageReference mimiImagesRef = storageRef.child("mimi/mimi.jpg");
     }
 
     public void viewImages(View view) {
