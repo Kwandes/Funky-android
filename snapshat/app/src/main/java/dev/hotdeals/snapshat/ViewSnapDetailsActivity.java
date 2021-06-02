@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import dev.hotdeals.snapshat.repo.FirebaseStorageRepo;
+
 public class ViewSnapDetailsActivity extends AppCompatActivity {
 
     ImageView detailedSnapImageView;
@@ -26,7 +28,7 @@ public class ViewSnapDetailsActivity extends AppCompatActivity {
         Log.d("Detailed Snap", "This is the detailed Snap name: " + snapId);
 
         StorageReference snapRef = FirebaseStorage.getInstance().getReference().child(snapId);
-        ViewSnapsActivity.fetchAndSetBitmapToImageView(snapRef, detailedSnapImageView, this);
+        FirebaseStorageRepo.fetchAndSetBitmapToImageView(snapRef, detailedSnapImageView, this);
     }
 
     public void goBack(View view) {
