@@ -145,8 +145,7 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
-    public void getAllSnaps()
-    {
+    public void getAllSnaps() {
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
         // Create a reference to the snap path
@@ -155,8 +154,7 @@ public class MainActivity extends AppCompatActivity {
         StorageReference mimiImagesRef = storageRef.child("mimi/mimi.jpg");
     }
 
-    public void viewImages(View view)
-    {
+    public void viewImages(View view) {
         Intent intent = new Intent(this, ViewSnapsActivity.class);
         startActivity(intent);
     }
