@@ -3,6 +3,7 @@ package dev.hotdeals.snapshat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,7 +51,7 @@ public class ViewSnapsActivity extends AppCompatActivity {
                             // Set the snaps name as its description
                             snapList.get(snapCounter).setContentDescription(item.getName());
                             // Set the snap to the corresponding imageView
-                            fetchAndSetBitmapToImageView(item, snapList.get(snapCounter));
+                            fetchAndSetBitmapToImageView(item, snapList.get(snapCounter), ViewSnapsActivity.this);
                             snapCounter++;
                         }
                     }
@@ -64,13 +65,13 @@ public class ViewSnapsActivity extends AppCompatActivity {
     }
 
     // Fetch a bitmap and assign it to a given imageView in the snapList
-    public void fetchAndSetBitmapToImageView(StorageReference ref, ImageView imageView) {
+    public static void fetchAndSetBitmapToImageView(StorageReference ref, ImageView imageView, Context context) {
         final long ONE_MEGABYTE = 1024 * 1024;
         ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             // convert the bits into a bitmap
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             // blur the bitmap to hide details and promote viewing the snap
-            bitmap = BitmapService.blur(this, bitmap, 25);
+            bitmap = BitmapService.blur(context, bitmap, 25);
             // Set the bitmap to the given imageView
             imageView.setImageBitmap(bitmap);
         }).addOnFailureListener(new OnFailureListener() {
