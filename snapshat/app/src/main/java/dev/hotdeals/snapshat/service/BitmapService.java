@@ -50,9 +50,10 @@ public class BitmapService {
         Canvas canvas = new Canvas(image);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);// new antialised Paint
         paint.setColor(Color.rgb(161, 161, 161));
-        paint.setTextSize((int) (24)); // text size in pixels
+        paint.setTextSize(canvas.getHeight() >> 4); // text size in pixels
         paint.setShadowLayer(1f, 0f, 1f, Color.BLACK); // text shadow
-        canvas.drawText(gText, 10, 200, paint);
+        // draw the text in the bottom quarter and starting from the left side of the image
+        canvas.drawText(gText, canvas.getWidth() >> 3, (canvas.getHeight() >> 2) * 3, paint);
         return image;
     }
 }
