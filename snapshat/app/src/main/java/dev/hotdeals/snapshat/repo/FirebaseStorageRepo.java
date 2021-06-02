@@ -24,7 +24,15 @@ public class FirebaseStorageRepo {
         fetchAndSetBitmapToImageView(ref, imageView, context, false);
     }
 
-    // Fetch a bitmap and assign it to a given imageView in the snapList
+    /**
+     * Fetch a bitmap and assign it to a given imageView in the snapList
+     * Optionally blurs the image (default is no blur)
+     *
+     * @param ref       Firebase Storage reference of the image file to download
+     * @param imageView ImageView controller object that the downloaded image will be set to
+     * @param context   The context that the imageView controller exists in
+     * @param blur      Optional flag of whether or not to blur the image. Default is false
+     */
     public static void fetchAndSetBitmapToImageView(StorageReference ref, ImageView imageView, Context context, boolean blur) {
         final long ONE_MEGABYTE = 1024 * 1024;
         ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {

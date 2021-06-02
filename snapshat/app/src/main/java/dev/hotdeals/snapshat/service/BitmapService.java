@@ -10,7 +10,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 
-// Service class that contains methods for manipulating bitmaps
+// Service/Utility class that contains methods for manipulating bitmaps
 public class BitmapService {
 
     // takes in a bitmap and blurs it
@@ -37,8 +37,14 @@ public class BitmapService {
         }
     }
 
-    // adds text to a bitmap
-    public static Bitmap drawTextToBitmap(Bitmap image, String gText) {
+    /**
+     * Adds text to a bitmap around the bottom quarter of the image
+     *
+     * @param image   Bitmap to be modified
+     * @param caption Text to put in the image
+     * @return A modified Bitmap with the text
+     */
+    public static Bitmap drawTextToBitmap(Bitmap image, String caption) {
         Bitmap.Config bitmapConfig = image.getConfig();
         // set default bitmap config if none
         if (bitmapConfig == null) {
@@ -48,12 +54,15 @@ public class BitmapService {
         // so we need to convert it to mutable one
         image = image.copy(bitmapConfig, true);
         Canvas canvas = new Canvas(image);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);// new antialised Paint
+        // new antialised Paint
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.rgb(161, 161, 161));
-        paint.setTextSize(canvas.getHeight() >> 4); // text size in pixels
-        paint.setShadowLayer(1f, 0f, 1f, Color.BLACK); // text shadow
+        // Set the text size relative to picture height
+        paint.setTextSize(canvas.getHeight() >> 4);
+        // Set text shadow
+        paint.setShadowLayer(1f, 0f, 1f, Color.BLACK);
         // draw the text in the bottom quarter and starting from the left side of the image
-        canvas.drawText(gText, canvas.getWidth() >> 3, (canvas.getHeight() >> 2) * 3, paint);
+        canvas.drawText(caption, canvas.getWidth() >> 3, (canvas.getHeight() >> 2) * 3, paint);
         return image;
     }
 }
