@@ -27,6 +27,7 @@ public class ViewSnapsActivity extends AppCompatActivity {
 
     // List of images to show on the screen
     List<ImageView> snapList = new ArrayList<>();
+    public static boolean needsToBeRecreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,5 +110,14 @@ public class ViewSnapsActivity extends AppCompatActivity {
 
     public void goBackToMainActivity(View view) {
         finish();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (needsToBeRecreated) {
+            needsToBeRecreated = false;
+            recreate();
+        }
     }
 }

@@ -31,6 +31,7 @@ public class ViewSnapDetailsActivity extends AppCompatActivity {
 
     public void goBack(View view) {
         FirebaseStorage.getInstance().getReference().child(snapId).delete();
+        ViewSnapsActivity.needsToBeRecreated = true;
         finish();
     }
 }
