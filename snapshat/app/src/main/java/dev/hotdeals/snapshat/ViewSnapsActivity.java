@@ -3,6 +3,7 @@ package dev.hotdeals.snapshat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -31,15 +32,7 @@ public class ViewSnapsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_snaps);
 
-        snapList.add(findViewById(R.id.snapOne));
-        snapList.add(findViewById(R.id.snapTwo));
-        snapList.add(findViewById(R.id.snapThree));
-        snapList.add(findViewById(R.id.snapFour));
-        snapList.add(findViewById(R.id.snapFive));
-        snapList.add(findViewById(R.id.snapSix));
-        snapList.add(findViewById(R.id.snapSeven));
-        snapList.add(findViewById(R.id.snapEight));
-        snapList.add(findViewById(R.id.snapNine));
+        initSnaps();
 
         // Referencing to an image file in Cloud Storage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -53,8 +46,10 @@ public class ViewSnapsActivity extends AppCompatActivity {
                         for (StorageReference item : listResult.getItems()) {
                             // Only fetch the amount of snaps that would fit on the screen
                             if (snapCounter >= snapList.size()) return;
-
                             Log.d("List fetching", item.getName());
+                            // Set the snaps name as its description
+                            snapList.get(snapCounter).setContentDescription(item.getName());
+                            // Set the snap to the corresponding imageView
                             fetchAndSetBitmapToImageView(item, snapList.get(snapCounter));
                             snapCounter++;
                         }
@@ -66,8 +61,6 @@ public class ViewSnapsActivity extends AppCompatActivity {
                         Log.w("Fetching Files", e);
                     }
                 });
-
-
     }
 
     // Fetch a bitmap and assign it to a given imageView in the snapList
@@ -86,6 +79,32 @@ public class ViewSnapsActivity extends AppCompatActivity {
                 Log.w("Get bitmap from file", exception);
             }
         });
+    }
+
+    private void initSnaps() {
+        snapList.add(findViewById(R.id.snapOne));
+        snapList.add(findViewById(R.id.snapTwo));
+        snapList.add(findViewById(R.id.snapThree));
+        snapList.add(findViewById(R.id.snapFour));
+        snapList.add(findViewById(R.id.snapFive));
+        snapList.add(findViewById(R.id.snapSix));
+        snapList.add(findViewById(R.id.snapSeven));
+        snapList.add(findViewById(R.id.snapEight));
+        snapList.add(findViewById(R.id.snapNine));
+
+        for (int i = 0; i < snapList.size() - 1; i++) {
+            int finalI = i;
+            snapList.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent snapDetailsIntent = new Intent(ViewSnapsActivity.this, ViewSnapDetailsActivity.class);
+                    // Parse the snaps description, aka firebase storage file name, to the new activity
+                    snapDetailsIntent.putExtra("SnapId", snapList.get(finalI).getContentDescription());
+                    startActivity(snapDetailsIntent);
+                }
+            });
+
+        }
     }
 
     public void goBackToMainActivity(View view) {
