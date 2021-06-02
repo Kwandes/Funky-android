@@ -13,6 +13,7 @@ import com.google.firebase.storage.StorageReference;
 public class ViewSnapDetailsActivity extends AppCompatActivity {
 
     ImageView detailedSnapImageView;
+    String snapId = "n/a";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class ViewSnapDetailsActivity extends AppCompatActivity {
 
         detailedSnapImageView = findViewById(R.id.detailedSnapImageView);
 
-        String snapId = getIntent().getStringExtra("SnapId");
+        snapId = getIntent().getStringExtra("SnapId");
         Log.d("Detailed Snap", "This is the detailed Snap name: " + snapId);
 
         StorageReference snapRef = FirebaseStorage.getInstance().getReference().child(snapId);
@@ -29,6 +30,7 @@ public class ViewSnapDetailsActivity extends AppCompatActivity {
     }
 
     public void goBack(View view) {
+        FirebaseStorage.getInstance().getReference().child(snapId).delete();
         finish();
     }
 }
