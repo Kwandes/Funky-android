@@ -6,9 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +24,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
+
+import dev.hotdeals.snapshat.service.BitmapService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
                 Log.d("Caption", "Text changed");
-                previewImageView.setImageBitmap(drawTextToBitmap(
+                previewImageView.setImageBitmap(BitmapService.drawTextToBitmap(
                         ((BitmapDrawable) previewImageView.getDrawable()).getBitmap(),
                         captionText.getText().toString()));
             }
@@ -118,24 +116,6 @@ public class MainActivity extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             previewImageView.setImageBitmap(imageBitmap);
         }
-    }
-
-    public Bitmap drawTextToBitmap(Bitmap image, String gText) {
-        Bitmap.Config bitmapConfig = image.getConfig();
-        // set default bitmap config if none
-        if (bitmapConfig == null) {
-            bitmapConfig = Bitmap.Config.ARGB_8888;
-        }
-        // resource bitmaps are immutable,
-        // so we need to convert it to mutable one
-        image = image.copy(bitmapConfig, true);
-        Canvas canvas = new Canvas(image);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);// new antialised Paint
-        paint.setColor(Color.rgb(161, 161, 161));
-        paint.setTextSize((int) (24)); // text size in pixels
-        paint.setShadowLayer(1f, 0f, 1f, Color.BLACK); // text shadow
-        canvas.drawText(gText, 10, 200, paint);
-        return image;
     }
 
     public void viewImages(View view) {

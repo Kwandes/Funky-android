@@ -2,6 +2,9 @@ package dev.hotdeals.snapshat.service;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -32,5 +35,24 @@ public class BitmapService {
         } else {
             return null;
         }
+    }
+
+    // adds text to a bitmap
+    public static Bitmap drawTextToBitmap(Bitmap image, String gText) {
+        Bitmap.Config bitmapConfig = image.getConfig();
+        // set default bitmap config if none
+        if (bitmapConfig == null) {
+            bitmapConfig = Bitmap.Config.ARGB_8888;
+        }
+        // resource bitmaps are immutable,
+        // so we need to convert it to mutable one
+        image = image.copy(bitmapConfig, true);
+        Canvas canvas = new Canvas(image);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);// new antialised Paint
+        paint.setColor(Color.rgb(161, 161, 161));
+        paint.setTextSize((int) (24)); // text size in pixels
+        paint.setShadowLayer(1f, 0f, 1f, Color.BLACK); // text shadow
+        canvas.drawText(gText, 10, 200, paint);
+        return image;
     }
 }
