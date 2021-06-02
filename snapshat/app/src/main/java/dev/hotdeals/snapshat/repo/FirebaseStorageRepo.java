@@ -19,14 +19,21 @@ import java.util.List;
 import dev.hotdeals.snapshat.service.BitmapService;
 
 public class FirebaseStorageRepo {
-    // Fetch a bitmap and assign it to a given imageView in the snapList
+
     public static void fetchAndSetBitmapToImageView(StorageReference ref, ImageView imageView, Context context) {
+        fetchAndSetBitmapToImageView(ref, imageView, context, false);
+    }
+
+    // Fetch a bitmap and assign it to a given imageView in the snapList
+    public static void fetchAndSetBitmapToImageView(StorageReference ref, ImageView imageView, Context context, boolean blur) {
         final long ONE_MEGABYTE = 1024 * 1024;
         ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             // convert the bits into a bitmap
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             // blur the bitmap to hide details and promote viewing the snap
-            bitmap = BitmapService.blur(context, bitmap, 25);
+            if (blur) {
+                bitmap = BitmapService.blur(context, bitmap, 25);
+            }
             // Set the bitmap to the given imageView
             imageView.setImageBitmap(bitmap);
         }).addOnFailureListener(new OnFailureListener() {
@@ -54,7 +61,7 @@ public class FirebaseStorageRepo {
                             // Set the snaps name as its description
                             snapList.get(snapCounter).setContentDescription(item.getName());
                             // Set the snap to the corresponding imageView
-                            FirebaseStorageRepo.fetchAndSetBitmapToImageView(item, snapList.get(snapCounter), context);
+                            FirebaseStorageRepo.fetchAndSetBitmapToImageView(item, snapList.get(snapCounter), context, true);
                             snapCounter++;
                         }
                     }
