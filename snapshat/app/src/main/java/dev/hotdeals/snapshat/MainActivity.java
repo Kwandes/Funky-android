@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     // Image operation variables
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    TextView helloWorldTxt;
     EditText captionText;
     ImageView previewImageView;
 
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        helloWorldTxt = findViewById(R.id.helloWorldTxt);
         captionText = findViewById(R.id.captionText);
         previewImageView = findViewById(R.id.previewImageView);
 
@@ -96,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.d("Firebase", "Kiwi Mimi uploaded");
-                helloWorldTxt.setText("Image uploaded!");
             }
         });
     }
