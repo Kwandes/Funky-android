@@ -52,6 +52,7 @@ public class FirebaseStorageRepo {
         });
     }
 
+    // fetch snaps and assign them to a list of image views
     public static void fetchSnapsToList(List<ImageView> snapList, Context context) {
         // Referencing to an image file in Cloud Storage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();

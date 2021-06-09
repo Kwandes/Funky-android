@@ -19,6 +19,7 @@ public class ViewSnapsActivity extends AppCompatActivity {
     public static boolean needsToBeRecreated = false;
 
     @Override
+    // initialize the snap list and fetch the data from the database
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_snaps);
@@ -27,6 +28,7 @@ public class ViewSnapsActivity extends AppCompatActivity {
         FirebaseStorageRepo.fetchSnapsToList(snapList, this);
     }
 
+    // initialize the snap list and their onclick listeners
     private void initSnaps() {
         snapList.add(findViewById(R.id.snapOne));
         snapList.add(findViewById(R.id.snapTwo));
@@ -52,11 +54,13 @@ public class ViewSnapsActivity extends AppCompatActivity {
         }
     }
 
+    // quite self explanatory
     public void goBackToMainActivity(View view) {
         finish();
     }
 
     @Override
+    // refresh the current activity to reload the snaps etc
     public void onResume() {
         super.onResume();
         if (needsToBeRecreated) {

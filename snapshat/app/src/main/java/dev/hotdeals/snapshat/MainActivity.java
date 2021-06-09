@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView previewImageView;
 
     @Override
+    // initialize the caption text and preview image. Add a lister for the caption
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // used by a button, adds the image to firebase storage
     public void addImage(View view) {
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // handles taking of a picture via the camera
     public void takeCameraPicture(View view) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    // used by the takeCameraPicture function, handles result of taking a camera picture
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // change activity to ViewSnapsActivity
     public void viewImages(View view) {
         Intent intent = new Intent(this, ViewSnapsActivity.class);
         startActivity(intent);

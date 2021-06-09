@@ -18,6 +18,7 @@ public class ViewSnapDetailsActivity extends AppCompatActivity {
     String snapId = "n/a";
 
     @Override
+    // Get a high res version of the given snap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_snap_details);
@@ -31,6 +32,7 @@ public class ViewSnapDetailsActivity extends AppCompatActivity {
         FirebaseStorageRepo.fetchAndSetBitmapToImageView(snapRef, detailedSnapImageView, this);
     }
 
+    // Go back to the snap list activity
     public void goBack(View view) {
         FirebaseStorage.getInstance().getReference().child(snapId).delete();
         ViewSnapsActivity.needsToBeRecreated = true;
